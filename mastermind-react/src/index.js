@@ -83,7 +83,7 @@ class Game extends React.Component {
         "019faf",
         "e6337a",
       ],
-      paleta: false,
+      paleta: "none",
 
     };
   }
@@ -116,6 +116,9 @@ class Game extends React.Component {
     return number
   }
   render(){
+    const asignarColor = (color) => {
+      // setColor(color);
+    };
     return (
       <div className="Game">
         <div className="grid-juego">
@@ -132,14 +135,48 @@ class Game extends React.Component {
 }
 
 function Fila(props){
-  var circulos = []
-  var count = 4
-  for (let index = 0; index < count; index++) {
-    circulos.push(<Circulo colores={props.colores} display="none" key={index} />);
+  const fila = [
+    { color: "ffff", key: 1 },
+    { color: "ffff", key: 2 },
+    { color: "ffff", key: 3 },
+    { color: "ffff", key: 4 },
+  ];
+  const asignarColor = (e, indice) =>{
+    console.log("el color enviado es "+e)
+    if(e <= 4){
+      setPaleta("flex");
+    }
+    else{
+      setPaleta("none");
+      fila.forEach((element, key, array) => {
+        console.log(element.key+" -- "+indice)
+        if (element.key --- indice) {
+            array[key].color = e;
+        }
+      });
+      console.log(fila)
+    }
+    
   }
+  const [paleta, setPaleta] = useState("none")
+  const circulos = fila.map((fila)=>{
+    return (
+      <span
+      className='circulo'
+        style={{ backgroundColor: "#" + fila.color }}
+        key={fila.key.toString()}
+        onClick={() =>asignarColor(fila.key, fila.color)}
+      ></span>
+    );
+  })
   console.log("los circulos "+circulos)
   return (
     <div className="fila">
+      <Paleta
+        colores={props.colores}
+        display={paleta}
+        asignarColor={asignarColor}
+      />
       {circulos}
     </div>
   );
@@ -147,12 +184,11 @@ function Fila(props){
 function Paleta(props){
   function handlePaleta(e) {
     props.asignarColor(e)
-    props.setDisplay("none");
-    console.log(props.display)
+
   }
   let circulos = props.colores.map(element => {
     
-    return <span className='circulo' key={element} style={{backgroundColor:"#"+element}} onClick={handlePaleta.bind(this,element)}></span>
+    return <span className='color' key={element} style={{backgroundColor:"#"+element}} onClick={handlePaleta.bind(this,element)}></span>
   });
 
   return <div className="Paleta"  style={{display:props.display}} >{circulos}</div>;
@@ -162,18 +198,17 @@ function Paleta(props){
 
 
 function Circulo(props){
-  const [display, setDisplay] = useState("none")
   const [color, setColor] = useState("white")
   function handleClick(e){
-    setDisplay("flex")
-  }
-  const asignarColor = (color) => {
-    setColor(color)
-    setDisplay("none")
+    props.setState({paleta:"flex"})
+
   }
   return (
-    <span className="circulo"  onClick={handleClick} style={{backgroundColor:"#"+color}} >
-      <Paleta colores={props.colores} display={display} setDisplay={setDisplay} asignarColor={asignarColor} />
+    <span
+      className="circulo"
+      onClick={handleClick}
+      style={{ backgroundColor: "#" + color }}
+    >
     </span>
   );
 }

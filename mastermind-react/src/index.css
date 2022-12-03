@@ -19,7 +19,7 @@ code {
   height: 50vh;
 }
 
-.circulo {
+.circulo, .color {
   width: 10px;
   height: 10px;
   border-radius: 50%;
