@@ -24,3 +24,4 @@ yarn-error.log*
 venv/
 masterMindDjango/venv
 **/__pycache__
+mastermind-react/build/
